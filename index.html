@@ -319,6 +319,18 @@
     }
 
     /* Section Global */
+    .page-view {
+      display: none;
+    }
+
+    .page-view.is-active {
+      display: block;
+    }
+
+    .hero.page-view.is-active {
+      display: flex;
+    }
+
     .section {
       padding: 100px 8%;
       position: relative;
@@ -696,17 +708,17 @@
 
   <!-- Header & Navigation -->
   <header id="navbar">
-    <a href="#home" class="logo">
+    <a href="?page=home" class="logo">
       <div class="logo-icon">R</div>
       <div class="logo-text"><span>RED</span><b>HOUND</b></div>
     </a>
 
     <nav id="nav-menu">
-      <a href="#home" class="active">Home</a>
-      <a href="#services">Services</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-      <a href="#contact" class="nav-cta">Hire Me</a>
+      <a href="?page=home" data-page-link="home">Home</a>
+      <a href="?page=services" data-page-link="services">Services</a>
+      <a href="?page=projects" data-page-link="projects">Projects</a>
+      <a href="?page=contact" data-page-link="contact">Contact</a>
+      <a href="?page=contact" class="nav-cta" data-page-link="contact">Hire Me</a>
     </nav>
 
     <div class="menu-toggle" id="mobile-toggle">
@@ -717,7 +729,7 @@
   </header>
 
   <!-- Hero Section (#home) -->
-  <section class="hero" id="home">
+  <section class="hero page-view" id="home" data-page-view="home">
     <div class="badge-status">
       <span class="status-dot"></span> Available for Freelance & Custom Projects
     </div>
@@ -729,8 +741,8 @@
     </p>
 
     <div class="hero-btn-group">
-      <a href="#projects" class="btn">⚡ Explore Projects</a>
-      <a href="#contact" class="btn btn-secondary">💬 Get In Touch</a>
+      <a href="?page=projects" class="btn">⚡ Explore Projects</a>
+      <a href="?page=contact" class="btn btn-secondary">💬 Get In Touch</a>
     </div>
 
     <div class="hero-stats">
@@ -750,7 +762,7 @@
   </section>
 
   <!-- Services Section (#services) -->
-  <section class="section" id="services">
+  <section class="section page-view" id="services" data-page-view="services">
     <div class="section-header">
       <h2>My <span>Services</span></h2>
       <p>Specialized web development and automated solutions tailored for content creators, gaming communities, and brands.</p>
@@ -766,6 +778,7 @@
           <span class="tag">Responsive</span>
           <span class="tag">UI/UX</span>
         </div>
+        <a href="?page=contact&service=website" class="btn btn-secondary">Discuss Website Design</a>
       </div>
 
       <div class="card">
@@ -777,6 +790,7 @@
           <span class="tag">Streamers</span>
           <span class="tag">Dark Theme</span>
         </div>
+        <a href="?page=contact&service=portfolio" class="btn btn-secondary">Discuss a Gaming Portfolio</a>
       </div>
 
       <div class="card">
@@ -788,12 +802,13 @@
           <span class="tag">YouTube Live API</span>
           <span class="tag">WebSockets</span>
         </div>
+        <a href="?page=contact&service=bot" class="btn btn-secondary">Discuss Bots & Automation</a>
       </div>
     </div>
   </section>
 
   <!-- Projects Section (#projects) -->
-  <section class="section" id="projects">
+  <section class="section page-view" id="projects" data-page-view="projects">
     <div class="section-header">
       <h2>Featured <span>Projects</span></h2>
       <p>Take a look at some of my recent work spanning bot development, gaming portals, and full web applications.</p>
@@ -849,7 +864,7 @@
   </section>
 
   <!-- Contact Section (#contact) -->
-  <section class="section" id="contact">
+  <section class="section page-view" id="contact" data-page-view="contact">
     <div class="section-header">
       <h2>Let's <span>Work Together</span></h2>
       <p>Have a website project, gaming bot request, or custom tool requirement? Drop a message below!</p>
@@ -865,7 +880,7 @@
             <div class="detail-icon">📧</div>
             <div>
               <strong style="display:block;">Email</strong>
-              <span style="color: var(--text-muted);">redhound.gaming@example.com</span>
+              <a href="mailto:laakshithgaddam@gmail.com" style="color: var(--text-muted);">laakshithgaddam@gmail.com</a>
             </div>
           </div>
 
@@ -873,7 +888,7 @@
             <div class="detail-icon">💬</div>
             <div>
               <strong style="display:block;">Discord</strong>
-              <span style="color: var(--text-muted);">RedHound#0001</span>
+              <a href="https://discord.com/users/1141186663679275008" target="_blank" rel="noopener noreferrer" style="color: var(--text-muted);">RedHound on Discord</a>
             </div>
           </div>
 
@@ -890,17 +905,17 @@
       <form id="contact-form" onsubmit="handleFormSubmit(event)">
         <div class="form-group">
           <label for="name">Your Name</label>
-          <input type="text" id="name" class="form-control" placeholder="John Doe" required>
+          <input type="text" id="name" name="name" class="form-control" placeholder="John Doe" required>
         </div>
 
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input type="email" id="email" class="form-control" placeholder="john@example.com" required>
+          <input type="email" id="email" name="email" class="form-control" placeholder="john@example.com" required>
         </div>
 
         <div class="form-group">
           <label for="service">Required Service</label>
-          <select id="service" class="form-control">
+          <select id="service" name="service" class="form-control">
             <option value="website">Custom Website Design</option>
             <option value="bot">YouTube / Discord Bot</option>
             <option value="portfolio">Gaming Portfolio</option>
@@ -910,10 +925,10 @@
 
         <div class="form-group">
           <label for="message">Project Details</label>
-          <textarea id="message" class="form-control" placeholder="Tell me about your project requirements..." required></textarea>
+          <textarea id="message" name="project_details" class="form-control" placeholder="Tell me about your project requirements..." required></textarea>
         </div>
 
-        <button type="submit" class="btn" style="width: 100%;">🚀 Send Message</button>
+        <button type="submit" id="submit-btn" class="btn" style="width: 100%;">🚀 Send Message</button>
       </form>
     </div>
   </section>
@@ -927,7 +942,7 @@
     <div class="social-links">
       <a href="#" class="social-icon" title="GitHub">💻</a>
       <a href="#" class="social-icon" title="YouTube">📺</a>
-      <a href="#" class="social-icon" title="Discord">🎮</a>
+      <a href="https://discord.com/users/1141186663679275008" class="social-icon" title="Discord" target="_blank" rel="noopener noreferrer">🎮</a>
       <a href="#" class="social-icon" title="Twitter">🐤</a>
     </div>
   </footer>
@@ -957,6 +972,22 @@
     // Mobile Nav Toggle
     const mobileToggle = document.getElementById('mobile-toggle');
     const navMenu = document.getElementById('nav-menu');
+    const requestedPage = new URLSearchParams(window.location.search).get('page');
+    const availablePages = ['home', 'services', 'projects', 'contact'];
+    const currentPage = availablePages.includes(requestedPage) ? requestedPage : 'home';
+
+    document.querySelectorAll('[data-page-view]').forEach(pageView => {
+      pageView.classList.toggle('is-active', pageView.dataset.pageView === currentPage);
+    });
+    document.querySelectorAll('[data-page-link]').forEach(link => {
+      link.classList.toggle('active', link.dataset.pageLink === currentPage);
+    });
+    document.title = `${currentPage.charAt(0).toUpperCase()}${currentPage.slice(1)} | RedHound`;
+
+    const requestedService = new URLSearchParams(window.location.search).get('service');
+    if (requestedService && document.querySelector(`#service option[value="${requestedService}"]`)) {
+      document.getElementById('service').value = requestedService;
+    }
 
     mobileToggle.addEventListener('click', () => {
       navMenu.classList.toggle('open');
@@ -966,27 +997,6 @@
     document.querySelectorAll('#nav-menu a').forEach(link => {
       link.addEventListener('click', () => {
         navMenu.classList.remove('open');
-      });
-    });
-
-    // Active Navigation Highlight on Scroll
-    window.addEventListener('scroll', () => {
-      const sections = document.querySelectorAll('section');
-      const navLinks = document.querySelectorAll('nav a');
-      let current = '';
-
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop - 120;
-        if (pageYOffset >= sectionTop) {
-          current = section.getAttribute('id');
-        }
-      });
-
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-          link.classList.add('active');
-        }
       });
     });
 
@@ -1032,11 +1042,37 @@
     }
 
     // Form Submission Handling
-    function handleFormSubmit(event) {
+    async function handleFormSubmit(event) {
       event.preventDefault();
-      const name = document.getElementById('name').value;
-      showToast(`Thank you, ${name}! Your message has been sent.`);
-      document.getElementById('contact-form').reset();
+      const submitBtn = document.getElementById('submit-btn');
+      const originalBtnText = submitBtn.innerText;
+      
+      submitBtn.disabled = true;
+      submitBtn.innerText = '⏳ Sending...';
+
+      const formData = new FormData(document.getElementById('contact-form'));
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/submit-project', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok && result.status === 'success') {
+          showToast(`Thank you, ${formData.get('name')}! Your project inquiry has been sent.`);
+          document.getElementById('contact-form').reset();
+        } else {
+          showToast(result.message || 'Failed to send email. Please check backend config.');
+        }
+      } catch (error) {
+        console.error('Submission error:', error);
+        showToast('Could not connect to backend server. Ensure app.py is running.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalBtnText;
+      }
     }
 
     // Toast Function
