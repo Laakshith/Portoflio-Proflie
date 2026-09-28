@@ -1,4 +1,5 @@
 import os
+import ssl
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -45,17 +46,29 @@ def submit_project():
     )
     msg.attach(MIMEText(body, 'plain'))
 
+    server = None
+    smtp_stage = 'connecting to Gmail'
     try:
-        # Connect to Gmail SMTP Server (Port 587 for TLS)
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
+        server = smtplib.SMTP('smtp.gmail.com', 587, timeout=20)
+        smtp_stage = 'starting TLS'
+        server.starttls(context=ssl.create_default_context())
+        smtp_stage = 'authenticating with Gmail'
         server.login(SMTP_EMAIL, SMTP_APP_PASSWORD)
-        server.sendmail(SMTP_EMAIL, RECEIVER_EMAIL, msg.as_string())
-        server.quit()
-        return jsonify({"status": "success", "message": "Email sent successfully!"}), 200
+        smtp_stage = 'sending the email'
+        refused = server.sendmail(SMTP_EMAIL, RECEIVER_EMAIL, msg.as_string())
+        if refused:
+            raise smtplib.SMTPRecipientsRefused(refused)
     except Exception as e:
-        print(f"Error sending email: {e}")
-        return jsonify({"status": "error", "message": f"Failed to send email: {str(e)}"}), 500
+        print(f"Error {smtp_stage}: {e}")
+        return jsonify({"status": "error", "message": f"Failed while {smtp_stage}: {str(e)}"}), 500
+    finally:
+        if server is not None:
+            try:
+                server.close()
+            except OSError:
+                pass
+
+    return jsonify({"status": "success", "message": "Email sent successfully!"}), 200
 
 if __name__ == '__main__':
     print("Starting Flask email notification server on http://127.0.0.1:5000...")
