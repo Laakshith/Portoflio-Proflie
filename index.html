@@ -1044,13 +1044,27 @@
     // Form Submission Handling
     async function handleFormSubmit(event) {
       event.preventDefault();
+      const formData = new FormData(document.getElementById('contact-form'));
+
+      if (!['localhost', '127.0.0.1'].includes(window.location.hostname)) {
+        const emailBody = [
+          `Name: ${formData.get('name')}`,
+          `Email: ${formData.get('email')}`,
+          `Service: ${formData.get('service')}`,
+          '',
+          `Project details: ${formData.get('project_details')}`
+        ].join('\n');
+        const mailtoUrl = `mailto:laakshithgaddam@gmail.com?subject=${encodeURIComponent(`Project inquiry from ${formData.get('name')}`)}&body=${encodeURIComponent(emailBody)}`;
+        window.location.href = mailtoUrl;
+        showToast('Your email app is opening with the message. Send the draft to complete your inquiry.');
+        return;
+      }
+
       const submitBtn = document.getElementById('submit-btn');
       const originalBtnText = submitBtn.innerText;
       
       submitBtn.disabled = true;
       submitBtn.innerText = '⏳ Sending...';
-
-      const formData = new FormData(document.getElementById('contact-form'));
 
       try {
         const response = await fetch('http://127.0.0.1:5000/submit-project', {
